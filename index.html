@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>Untitled3</title>
+<title>Untitled5</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13115,7 +13115,7 @@ div#notebook {
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="nf">rm</span><span class="p">(</span><span class="n">list</span><span class="o">=</span><span class="nf">ls</span><span class="p">())</span> 
@@ -13142,6 +13142,310 @@ div#notebook {
 
 <span class="nf">print</span><span class="p">(</span><span class="s">&quot;Is this consistent with Poisson distribution claim?&quot;</span><span class="p">)</span>
 <span class="nf">print</span><span class="p">(</span><span class="s">&quot;Mostly, yes&quot;</span><span class="p">)</span>
+
+<span class="c1"># Task 2</span>
+
+<span class="n">bets</span> <span class="o">&lt;-</span> <span class="nf">read.csv</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s">&quot;c:/Users/Onur/Desktop/bets.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&quot;,&quot;</span><span class="p">)</span>
+<span class="n">stats</span> <span class="o">&lt;-</span> <span class="nf">read.csv</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s">&quot;c:/Users/Onur/Desktop/stats.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&quot;,&quot;</span><span class="p">)</span>
+<span class="n">booking</span> <span class="o">&lt;-</span> <span class="nf">read.csv</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s">&quot;c:/Users/Onur/Desktop/booking.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&quot;,&quot;</span><span class="p">)</span>
+<span class="n">matches</span> <span class="o">&lt;-</span> <span class="nf">read.csv</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s">&quot;c:/Users/Onur/Desktop/matches.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&quot;,&quot;</span><span class="p">)</span>
+
+<span class="n">premier_league_matches</span> <span class="o">=</span> <span class="n">matches[matches</span><span class="o">$</span><span class="n">league_id</span> <span class="o">==</span> <span class="m">148</span><span class="p">,</span> <span class="n">]</span>
+<span class="n">finished_premier_league_matches</span> <span class="o">=</span> <span class="n">premier_league_matches[premier_league_matches</span><span class="o">$</span><span class="n">match_status</span> <span class="o">==</span> <span class="s">&quot;Finished&quot;</span><span class="p">,</span><span class="n">]</span>
+<span class="n">premier_league_match_id</span> <span class="o">=</span> <span class="n">finished_premier_league_matches[</span><span class="p">,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;match_id&quot;</span><span class="p">)</span><span class="n">]</span>
+
+<span class="n">ind_bet_premier_league</span> <span class="o">=</span> <span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="nf">match</span><span class="p">(</span><span class="n">bets</span><span class="o">$</span><span class="n">match_id</span><span class="p">,</span><span class="n">premier_league_match_id</span><span class="p">))</span> <span class="o">==</span> <span class="kc">FALSE</span><span class="p">)</span>
+<span class="n">premier_league_bets</span> <span class="o">=</span> <span class="n">bets[ind_bet_premier_league</span><span class="p">,</span><span class="n">]</span>
+
+<span class="c1"># bwin</span>
+<span class="c1"># 1xBet</span>
+<span class="c1"># Betway</span>
+<span class="c1"># bet365</span>
+
+<span class="c1">################## 1xBet #########################################</span>
+
+<span class="n">premier_league_bets_1xBet</span> <span class="o">=</span> <span class="n">premier_league_bets[premier_league_bets</span><span class="o">$</span><span class="n">odd_bookmakers</span> <span class="o">==</span> <span class="s">&quot;1xBet&quot;</span><span class="p">,</span><span class="n">]</span>
+<span class="n">premier_league_bets_1xBet_1</span> <span class="o">=</span> <span class="n">premier_league_bets_1xBet[premier_league_bets_1xBet</span><span class="o">$</span><span class="n">variable</span> <span class="o">==</span> <span class="s">&quot;odd_1&quot;</span><span class="p">,</span><span class="n">]</span>
+<span class="n">premier_league_bets_1xBet_x</span> <span class="o">=</span> <span class="n">premier_league_bets_1xBet[premier_league_bets_1xBet</span><span class="o">$</span><span class="n">variable</span> <span class="o">==</span> <span class="s">&quot;odd_x&quot;</span><span class="p">,</span><span class="n">]</span>
+<span class="n">premier_league_bets_1xBet_2</span> <span class="o">=</span> <span class="n">premier_league_bets_1xBet[premier_league_bets_1xBet</span><span class="o">$</span><span class="n">variable</span> <span class="o">==</span> <span class="s">&quot;odd_2&quot;</span><span class="p">,</span><span class="n">]</span>
+
+<span class="n">premier_league_bets_1xBet_1x2</span> <span class="o">=</span> <span class="nf">rbind</span><span class="p">(</span><span class="n">premier_league_bets_1xBet_1[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span><span class="p">,</span><span class="n">premier_league_bets_1xBet_x[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span><span class="p">,</span><span class="n">premier_league_bets_1xBet_2[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span> <span class="p">)</span>
+
+<span class="n">p_premier_league_bets_1xBet_1x2</span> <span class="o">=</span> <span class="m">1</span><span class="o">/</span><span class="n">premier_league_bets_1xBet_1x2</span>
+<span class="n">colsum_p_premier_league_bets_1xBet_1x2</span> <span class="o">=</span> <span class="nf">colSums</span><span class="p">(</span><span class="n">p_premier_league_bets_1xBet_1x2</span><span class="p">)</span>
+<span class="n">pnormal_premier_league_bets_1xBet_1x2</span> <span class="o">=</span> <span class="nf">sweep</span><span class="p">(</span><span class="n">p_premier_league_bets_1xBet_1x2</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="n">colsum_p_premier_league_bets_1xBet_1x2</span><span class="p">,</span> <span class="n">FUN</span> <span class="o">=</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
+
+
+<span class="n">delta_home_away_win</span> <span class="o">=</span> <span class="n">pnormal_premier_league_bets_1xBet_1x2[1</span><span class="p">,</span><span class="n">]</span> <span class="o">-</span> <span class="n">pnormal_premier_league_bets_1xBet_1x2[3</span><span class="p">,</span><span class="n">]</span> 
+<span class="c1"># plot(delta_home_away_win,pnormal_premier_league_bets_1xBet_1x2[2,], xlab = &quot;P(home win) – P(away win)&quot;, ylab = &quot;P(tie)&quot;,axes =&quot;FALSE&quot;,main= &quot;1xBet&quot;)</span>
+<span class="c1"># axis(side = 2, at = seq(0,0.5,0.1))</span>
+<span class="c1"># axis(side = 1, at = seq(-1,1,0.1))</span>
+
+<span class="n">score_difference</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0.1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_1xBet_x</span><span class="p">))</span>
+<span class="n">results</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">3</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_1xBet_x</span><span class="p">))</span>
+<span class="nf">for</span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_1xBet_x</span><span class="p">)){</span>
+  
+  <span class="n">score_difference[i]</span> <span class="o">=</span> <span class="n">matches[matches</span><span class="o">$</span><span class="n">match_id</span> <span class="o">==</span> <span class="n">premier_league_bets_1xBet_x[i</span><span class="p">,</span><span class="m">1</span><span class="n">]</span><span class="p">,</span><span class="n">][1</span><span class="p">,</span><span class="m">9</span><span class="n">]</span><span class="o">-</span> <span class="n">matches[matches</span><span class="o">$</span><span class="n">match_id</span> <span class="o">==</span> <span class="n">premier_league_bets_1xBet_x[i</span><span class="p">,</span><span class="m">1</span><span class="n">]</span><span class="p">,</span><span class="n">][1</span><span class="p">,</span><span class="m">10</span><span class="n">]</span>
+  
+  <span class="nf">if </span><span class="p">(</span><span class="n">score_difference[i]</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">results[1</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span> <span class="n">else</span> <span class="nf">if </span><span class="p">(</span> <span class="n">score_difference[i]</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">results[2</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span> 
+  <span class="n">else</span><span class="p">{</span>
+    <span class="n">results[3</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># table(cut(delta_home_away_win, breaks = seq.int(from = -1, to = 1, by = 0.2)))</span>
+
+<span class="n">bins</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_1xBet_x</span><span class="p">))</span>
+<span class="n">bins_correct_guess</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_1xBet_x</span><span class="p">))</span>
+<span class="n">bin_number</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_1xBet_x</span><span class="p">))</span>
+
+<span class="nf">for</span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_1xBet_x</span><span class="p">)){</span>
+  
+  <span class="n">bin_number[i]</span> <span class="o">=</span>   <span class="nf">ceiling</span><span class="p">(</span><span class="n">delta_home_away_win[i]</span> <span class="o">/</span> <span class="m">0.2</span><span class="p">)</span><span class="m">+5</span>
+  <span class="n">bins[bin_number[i]</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="nf">if</span><span class="p">(</span><span class="n">results[2</span><span class="p">,</span><span class="n">i]</span> <span class="o">==</span> <span class="m">1</span><span class="p">){</span>
+    <span class="n">bins_correct_guess[bin_number[i]</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">real_probability</span> <span class="o">=</span> <span class="nf">rowSums</span><span class="p">(</span><span class="n">bins_correct_guess</span><span class="p">)</span><span class="o">/</span> <span class="nf">rowSums</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
+<span class="c1"># lines(seq(-0.9,0.9,0.2),real_probability,type = &#39;l&#39;)</span>
+
+<span class="c1">################## bwin #########################################</span>
+
+<span class="n">premier_league_bets_bwin</span> <span class="o">=</span> <span class="n">premier_league_bets[premier_league_bets</span><span class="o">$</span><span class="n">odd_bookmakers</span> <span class="o">==</span> <span class="s">&quot;bwin&quot;</span><span class="p">,</span><span class="n">]</span>
+
+<span class="n">premier_league_bets_bwin_1</span> <span class="o">=</span> <span class="n">premier_league_bets_bwin[premier_league_bets_bwin</span><span class="o">$</span><span class="n">variable</span> <span class="o">==</span> <span class="s">&quot;odd_1&quot;</span><span class="p">,</span><span class="n">]</span>
+<span class="n">premier_league_bets_bwin_x</span> <span class="o">=</span> <span class="n">premier_league_bets_bwin[premier_league_bets_bwin</span><span class="o">$</span><span class="n">variable</span> <span class="o">==</span> <span class="s">&quot;odd_x&quot;</span><span class="p">,</span><span class="n">]</span>
+<span class="n">premier_league_bets_bwin_2</span> <span class="o">=</span> <span class="n">premier_league_bets_bwin[premier_league_bets_bwin</span><span class="o">$</span><span class="n">variable</span> <span class="o">==</span> <span class="s">&quot;odd_2&quot;</span><span class="p">,</span><span class="n">]</span>
+
+<span class="n">premier_league_bets_bwin_1x2</span> <span class="o">=</span> <span class="nf">rbind</span><span class="p">(</span><span class="n">premier_league_bets_bwin_1[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span><span class="p">,</span><span class="n">premier_league_bets_bwin_x[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span><span class="p">,</span><span class="n">premier_league_bets_bwin_2[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span><span class="p">)</span>
+
+<span class="n">p_premier_league_bets_bwin_1x2</span> <span class="o">=</span> <span class="m">1</span><span class="o">/</span><span class="n">premier_league_bets_bwin_1x2</span>
+<span class="n">colsum_p_premier_league_bets_bwin_1x2</span> <span class="o">=</span> <span class="nf">colSums</span><span class="p">(</span><span class="n">p_premier_league_bets_bwin_1x2</span><span class="p">)</span>
+<span class="n">pnormal_premier_league_bets_bwin_1x2</span> <span class="o">=</span> <span class="nf">sweep</span><span class="p">(</span><span class="n">p_premier_league_bets_bwin_1x2</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="n">colsum_p_premier_league_bets_bwin_1x2</span><span class="p">,</span> <span class="n">FUN</span> <span class="o">=</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
+
+<span class="n">delta_home_away_win_bwin</span> <span class="o">=</span> <span class="n">pnormal_premier_league_bets_bwin_1x2[1</span><span class="p">,</span><span class="n">]</span> <span class="o">-</span> <span class="n">pnormal_premier_league_bets_bwin_1x2[3</span><span class="p">,</span><span class="n">]</span> 
+<span class="c1"># plot(delta_home_away_win_bwin,pnormal_premier_league_bets_bwin_1x2[2,], xlab = &quot;P(home win) – P(away win)&quot;, ylab = &quot;P(tie)&quot;,axes =&quot;FALSE&quot;,main= &quot;bwin&quot;)</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">2</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0.5</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+
+<span class="n">score_difference_bwin</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0.1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bwin_x</span><span class="p">))</span>
+<span class="n">results_bwin</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">3</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bwin_x</span><span class="p">))</span>
+<span class="nf">for</span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bwin_x</span><span class="p">)){</span>
+  
+  <span class="n">score_difference_bwin[i]</span> <span class="o">=</span> <span class="n">matches[matches</span><span class="o">$</span><span class="n">match_id</span> <span class="o">==</span> <span class="n">premier_league_bets_bwin_x[i</span><span class="p">,</span><span class="m">1</span><span class="n">]</span><span class="p">,</span><span class="n">][1</span><span class="p">,</span><span class="m">9</span><span class="n">]</span><span class="o">-</span> <span class="n">matches[matches</span><span class="o">$</span><span class="n">match_id</span> <span class="o">==</span> <span class="n">premier_league_bets_bwin_x[i</span><span class="p">,</span><span class="m">1</span><span class="n">]</span><span class="p">,</span><span class="n">][1</span><span class="p">,</span><span class="m">10</span><span class="n">]</span>
+  
+  <span class="nf">if</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">score_difference_bwin[i]</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;TRUE&quot;</span><span class="p">){</span>
+    
+  <span class="p">}</span>
+  <span class="n">else</span> <span class="nf">if </span><span class="p">(</span><span class="n">score_difference_bwin[i]</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">results_bwin[1</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span> <span class="n">else</span> <span class="nf">if </span><span class="p">(</span> <span class="n">score_difference_bwin[i]</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">results_bwin[2</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span> 
+  <span class="n">else</span> <span class="nf">if</span><span class="p">(</span><span class="n">score_difference_bwin[i]</span> <span class="o">&lt;</span> <span class="m">0</span><span class="p">){</span>
+    <span class="n">results_bwin[3</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span>
+  
+<span class="p">}</span>
+
+
+
+<span class="c1"># table(cut(delta_home_away_win, breaks = seq.int(from = -1, to = 1, by = 0.2)))</span>
+
+<span class="n">bins_bwin</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bwin_x</span><span class="p">))</span>
+<span class="n">bins_correct_guess_bwin</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bwin_x</span><span class="p">))</span>
+<span class="n">bin_number</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bwin_x</span><span class="p">))</span>
+
+<span class="nf">for</span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bwin_x</span><span class="p">)){</span>
+  
+  <span class="n">bin_number[i]</span> <span class="o">=</span>   <span class="nf">ceiling</span><span class="p">(</span><span class="n">delta_home_away_win_bwin[i]</span> <span class="o">/</span> <span class="m">0.2</span><span class="p">)</span><span class="m">+5</span>
+  <span class="n">bins_bwin[bin_number[i]</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="nf">if</span><span class="p">(</span><span class="n">results_bwin[2</span><span class="p">,</span><span class="n">i]</span> <span class="o">==</span> <span class="m">1</span><span class="p">){</span>
+    <span class="n">bins_correct_guess_bwin[bin_number[i]</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">real_probability_bwin</span> <span class="o">=</span> <span class="nf">rowSums</span><span class="p">(</span><span class="n">bins_correct_guess_bwin</span><span class="p">)</span><span class="o">/</span> <span class="nf">rowSums</span><span class="p">(</span><span class="n">bins_bwin</span><span class="p">)</span>
+<span class="c1"># lines(seq(-0.9,0.9,0.2),real_probability,type = &#39;l&#39;)</span>
+
+
+<span class="c1">################## Betway #########################################</span>
+
+<span class="n">premier_league_bets_Betway</span> <span class="o">=</span> <span class="n">premier_league_bets[premier_league_bets</span><span class="o">$</span><span class="n">odd_bookmakers</span> <span class="o">==</span> <span class="s">&quot;Betway&quot;</span><span class="p">,</span><span class="n">]</span>
+<span class="n">premier_league_bets_Betway_1</span> <span class="o">=</span> <span class="n">premier_league_bets_Betway[premier_league_bets_Betway</span><span class="o">$</span><span class="n">variable</span> <span class="o">==</span> <span class="s">&quot;odd_1&quot;</span><span class="p">,</span><span class="n">]</span>
+<span class="n">premier_league_bets_Betway_x</span> <span class="o">=</span> <span class="n">premier_league_bets_Betway[premier_league_bets_Betway</span><span class="o">$</span><span class="n">variable</span> <span class="o">==</span> <span class="s">&quot;odd_x&quot;</span><span class="p">,</span><span class="n">]</span>
+<span class="n">premier_league_bets_Betway_2</span> <span class="o">=</span> <span class="n">premier_league_bets_Betway[premier_league_bets_Betway</span><span class="o">$</span><span class="n">variable</span> <span class="o">==</span> <span class="s">&quot;odd_2&quot;</span><span class="p">,</span><span class="n">]</span>
+
+<span class="n">premier_league_bets_Betway_1x2</span> <span class="o">=</span> <span class="nf">rbind</span><span class="p">(</span><span class="n">premier_league_bets_Betway_1[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span><span class="p">,</span><span class="n">premier_league_bets_Betway_x[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span><span class="p">,</span><span class="n">premier_league_bets_Betway_2[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span><span class="p">)</span>
+
+<span class="n">p_premier_league_bets_Betway_1x2</span> <span class="o">=</span> <span class="m">1</span><span class="o">/</span><span class="n">premier_league_bets_Betway_1x2</span>
+<span class="n">colsum_p_premier_league_bets_Betway_1x2</span> <span class="o">=</span> <span class="nf">colSums</span><span class="p">(</span><span class="n">p_premier_league_bets_Betway_1x2</span><span class="p">)</span>
+<span class="n">pnormal_premier_league_bets_Betway_1x2</span> <span class="o">=</span> <span class="nf">sweep</span><span class="p">(</span><span class="n">p_premier_league_bets_Betway_1x2</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="n">colsum_p_premier_league_bets_Betway_1x2</span><span class="p">,</span> <span class="n">FUN</span> <span class="o">=</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
+
+<span class="n">delta_home_away_win_Betway</span> <span class="o">=</span> <span class="n">pnormal_premier_league_bets_Betway_1x2[1</span><span class="p">,</span><span class="n">]</span> <span class="o">-</span> <span class="n">pnormal_premier_league_bets_Betway_1x2[3</span><span class="p">,</span><span class="n">]</span> 
+<span class="c1"># plot(delta_home_away_win_Betway,pnormal_premier_league_bets_Betway_1x2[2,], xlab = &quot;P(home win) – P(away win)&quot;, ylab = &quot;P(tie)&quot;,axes =&quot;FALSE&quot;,main= &quot;Betway&quot;)</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">2</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0.5</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+
+<span class="n">score_difference_Betway</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0.1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_Betway_x</span><span class="p">))</span>
+<span class="n">results_Betway</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">3</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_Betway_x</span><span class="p">))</span>
+<span class="nf">for</span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_Betway_x</span><span class="p">)){</span>
+  
+  <span class="n">score_difference_Betway[i]</span> <span class="o">=</span> <span class="n">matches[matches</span><span class="o">$</span><span class="n">match_id</span> <span class="o">==</span> <span class="n">premier_league_bets_Betway_x[i</span><span class="p">,</span><span class="m">1</span><span class="n">]</span><span class="p">,</span><span class="n">][1</span><span class="p">,</span><span class="m">9</span><span class="n">]</span><span class="o">-</span> <span class="n">matches[matches</span><span class="o">$</span><span class="n">match_id</span> <span class="o">==</span> <span class="n">premier_league_bets_Betway_x[i</span><span class="p">,</span><span class="m">1</span><span class="n">]</span><span class="p">,</span><span class="n">][1</span><span class="p">,</span><span class="m">10</span><span class="n">]</span>
+  
+  <span class="nf">if</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">score_difference_bwin[i]</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;TRUE&quot;</span><span class="p">){</span>
+    
+  <span class="p">}</span>
+  <span class="n">else</span> <span class="nf">if </span><span class="p">(</span><span class="n">score_difference_Betway[i]</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">results_Betway[1</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span> <span class="n">else</span> <span class="nf">if </span><span class="p">(</span> <span class="n">score_difference_Betway[i]</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">results_Betway[2</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span> 
+  <span class="n">else</span><span class="p">{</span>
+    <span class="n">results_Betway[3</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># table(cut(delta_home_away_win, breaks = seq.int(from = -1, to = 1, by = 0.2)))</span>
+
+<span class="n">bins_Betway</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_Betway_x</span><span class="p">))</span>
+<span class="n">bins_correct_guess_Betway</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_Betway_x</span><span class="p">))</span>
+<span class="n">bin_number</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_Betway_x</span><span class="p">))</span>
+
+<span class="nf">for</span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_Betway_x</span><span class="p">)){</span>
+  
+  <span class="n">bin_number[i]</span> <span class="o">=</span>   <span class="nf">ceiling</span><span class="p">(</span><span class="n">delta_home_away_win_Betway[i]</span> <span class="o">/</span> <span class="m">0.2</span><span class="p">)</span><span class="m">+5</span>
+  <span class="n">bins_Betway[bin_number[i]</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="nf">if</span><span class="p">(</span><span class="n">results_Betway[2</span><span class="p">,</span><span class="n">i]</span> <span class="o">==</span> <span class="m">1</span><span class="p">){</span>
+    <span class="n">bins_correct_guess_Betway[bin_number[i]</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">real_probability_Betway</span> <span class="o">=</span> <span class="nf">rowSums</span><span class="p">(</span><span class="n">bins_correct_guess_Betway</span><span class="p">)</span><span class="o">/</span> <span class="nf">rowSums</span><span class="p">(</span><span class="n">bins_Betway</span><span class="p">)</span>
+<span class="c1"># lines(seq(-0.9,0.9,0.2),real_probability_Betway,type = &#39;l&#39;)</span>
+
+
+<span class="c1">################## bet365 #########################################</span>
+
+<span class="n">premier_league_bets_bet365</span> <span class="o">=</span> <span class="n">premier_league_bets[premier_league_bets</span><span class="o">$</span><span class="n">odd_bookmakers</span> <span class="o">==</span> <span class="s">&quot;bet365&quot;</span><span class="p">,</span><span class="n">]</span>
+<span class="n">premier_league_bets_bet365_1</span> <span class="o">=</span> <span class="n">premier_league_bets_bet365[premier_league_bets_bet365</span><span class="o">$</span><span class="n">variable</span> <span class="o">==</span> <span class="s">&quot;odd_1&quot;</span><span class="p">,</span><span class="n">]</span>
+<span class="n">premier_league_bets_bet365_x</span> <span class="o">=</span> <span class="n">premier_league_bets_bet365[premier_league_bets_bet365</span><span class="o">$</span><span class="n">variable</span> <span class="o">==</span> <span class="s">&quot;odd_x&quot;</span><span class="p">,</span><span class="n">]</span>
+<span class="n">premier_league_bets_bet365_2</span> <span class="o">=</span> <span class="n">premier_league_bets_bet365[premier_league_bets_bet365</span><span class="o">$</span><span class="n">variable</span> <span class="o">==</span> <span class="s">&quot;odd_2&quot;</span><span class="p">,</span><span class="n">]</span>
+
+<span class="n">premier_league_bets_bet365_1x2</span> <span class="o">=</span> <span class="nf">rbind</span><span class="p">(</span><span class="n">premier_league_bets_bet365_1[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span><span class="p">,</span><span class="n">premier_league_bets_bet365_x[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span><span class="p">,</span><span class="n">premier_league_bets_bet365_2[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span><span class="p">)</span>
+
+<span class="n">p_premier_league_bets_bet365_1x2</span> <span class="o">=</span> <span class="m">1</span><span class="o">/</span><span class="n">premier_league_bets_bet365_1x2</span>
+<span class="n">colsum_p_premier_league_bets_bet365_1x2</span> <span class="o">=</span> <span class="nf">colSums</span><span class="p">(</span><span class="n">p_premier_league_bets_bet365_1x2</span><span class="p">)</span>
+<span class="n">pnormal_premier_league_bets_bet365_1x2</span> <span class="o">=</span> <span class="nf">sweep</span><span class="p">(</span><span class="n">p_premier_league_bets_bet365_1x2</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="n">colsum_p_premier_league_bets_bet365_1x2</span><span class="p">,</span> <span class="n">FUN</span> <span class="o">=</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
+
+<span class="n">delta_home_away_win_bet365</span> <span class="o">=</span> <span class="n">pnormal_premier_league_bets_bet365_1x2[1</span><span class="p">,</span><span class="n">]</span> <span class="o">-</span> <span class="n">pnormal_premier_league_bets_bet365_1x2[3</span><span class="p">,</span><span class="n">]</span> 
+<span class="c1"># plot(delta_home_away_win_bet365,pnormal_premier_league_bets_bet365_1x2[2,], xlab = &quot;P(home win) – P(away win)&quot;, ylab = &quot;P(tie)&quot;,axes =&quot;FALSE&quot;,main= &quot;bet365&quot;)</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">2</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0.5</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+
+<span class="n">score_difference_bet365</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0.1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bet365_x</span><span class="p">))</span>
+<span class="n">results_bet365</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">3</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bet365_x</span><span class="p">))</span>
+<span class="nf">for</span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bet365_x</span><span class="p">)){</span>
+  
+  <span class="n">score_difference_bet365[i]</span> <span class="o">=</span> <span class="n">matches[matches</span><span class="o">$</span><span class="n">match_id</span> <span class="o">==</span> <span class="n">premier_league_bets_bet365_x[i</span><span class="p">,</span><span class="m">1</span><span class="n">]</span><span class="p">,</span><span class="n">][1</span><span class="p">,</span><span class="m">9</span><span class="n">]</span><span class="o">-</span> <span class="n">matches[matches</span><span class="o">$</span><span class="n">match_id</span> <span class="o">==</span> <span class="n">premier_league_bets_bet365_x[i</span><span class="p">,</span><span class="m">1</span><span class="n">]</span><span class="p">,</span><span class="n">][1</span><span class="p">,</span><span class="m">10</span><span class="n">]</span>
+  
+  <span class="nf">if</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">score_difference_bet365[i]</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;TRUE&quot;</span><span class="p">){</span>
+    
+  <span class="p">}</span>
+  <span class="n">else</span> <span class="nf">if </span><span class="p">(</span><span class="n">score_difference_bet365[i]</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">results_bet365[1</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span> <span class="n">else</span> <span class="nf">if </span><span class="p">(</span> <span class="n">score_difference_bet365[i]</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">results_bet365[2</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span> 
+  <span class="n">else</span><span class="p">{</span>
+    <span class="n">results_bet365[3</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># table(cut(delta_home_away_win, breaks = seq.int(from = -1, to = 1, by = 0.2)))</span>
+
+<span class="n">bins_bet365</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bet365_x</span><span class="p">))</span>
+<span class="n">bins_correct_guess_bet365</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bet365_x</span><span class="p">))</span>
+<span class="n">bin_number</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bet365_x</span><span class="p">))</span>
+
+<span class="nf">for</span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_bet365_x</span><span class="p">)){</span>
+  
+  <span class="n">bin_number[i]</span> <span class="o">=</span>   <span class="nf">ceiling</span><span class="p">(</span><span class="n">delta_home_away_win_bet365[i]</span> <span class="o">/</span> <span class="m">0.2</span><span class="p">)</span><span class="m">+5</span>
+  <span class="n">bins_bet365[bin_number[i]</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="nf">if</span><span class="p">(</span><span class="n">results_bet365[2</span><span class="p">,</span><span class="n">i]</span> <span class="o">==</span> <span class="m">1</span><span class="p">){</span>
+    <span class="n">bins_correct_guess_bet365[bin_number[i]</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">real_probability_bet365</span> <span class="o">=</span> <span class="nf">rowSums</span><span class="p">(</span><span class="n">bins_correct_guess_bet365</span><span class="p">)</span><span class="o">/</span> <span class="nf">rowSums</span><span class="p">(</span><span class="n">bins_bet365</span><span class="p">)</span>
+<span class="c1"># lines(seq(-0.9,0.9,0.2),real_probability_bet365,type = &#39;l&#39;)</span>
+
+
+<span class="nf">par</span><span class="p">(</span><span class="n">mfrow</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">delta_home_away_win</span><span class="p">,</span><span class="n">pnormal_premier_league_bets_1xBet_1x2[2</span><span class="p">,</span><span class="n">]</span><span class="p">,</span> <span class="n">xlab</span> <span class="o">=</span> <span class="s">&quot;P(home win) – P(away win)&quot;</span><span class="p">,</span> <span class="n">ylab</span> <span class="o">=</span> <span class="s">&quot;P(tie)&quot;</span><span class="p">,</span><span class="n">axes</span> <span class="o">=</span><span class="s">&quot;FALSE&quot;</span><span class="p">,</span><span class="n">main</span><span class="o">=</span> <span class="s">&quot;1xBet&quot;</span><span class="p">)</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">2</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0.5</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+<span class="nf">lines</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="m">-0.9</span><span class="p">,</span><span class="m">0.9</span><span class="p">,</span><span class="m">0.2</span><span class="p">),</span><span class="n">real_probability</span><span class="p">,</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;l&#39;</span><span class="p">)</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="n">delta_home_away_win_bwin</span><span class="p">,</span><span class="n">pnormal_premier_league_bets_bwin_1x2[2</span><span class="p">,</span><span class="n">]</span><span class="p">,</span> <span class="n">xlab</span> <span class="o">=</span> <span class="s">&quot;P(home win) – P(away win)&quot;</span><span class="p">,</span> <span class="n">ylab</span> <span class="o">=</span> <span class="s">&quot;P(tie)&quot;</span><span class="p">,</span><span class="n">axes</span> <span class="o">=</span><span class="s">&quot;FALSE&quot;</span><span class="p">,</span><span class="n">main</span><span class="o">=</span> <span class="s">&quot;bwin&quot;</span><span class="p">)</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">2</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0.5</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+<span class="nf">lines</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="m">-0.9</span><span class="p">,</span><span class="m">0.9</span><span class="p">,</span><span class="m">0.2</span><span class="p">),</span><span class="n">real_probability</span><span class="p">,</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;l&#39;</span><span class="p">)</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="n">delta_home_away_win_Betway</span><span class="p">,</span><span class="n">pnormal_premier_league_bets_Betway_1x2[2</span><span class="p">,</span><span class="n">]</span><span class="p">,</span> <span class="n">xlab</span> <span class="o">=</span> <span class="s">&quot;P(home win) – P(away win)&quot;</span><span class="p">,</span> <span class="n">ylab</span> <span class="o">=</span> <span class="s">&quot;P(tie)&quot;</span><span class="p">,</span><span class="n">axes</span> <span class="o">=</span><span class="s">&quot;FALSE&quot;</span><span class="p">,</span><span class="n">main</span><span class="o">=</span> <span class="s">&quot;Betway&quot;</span><span class="p">)</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">2</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0.5</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+<span class="nf">lines</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="m">-0.9</span><span class="p">,</span><span class="m">0.9</span><span class="p">,</span><span class="m">0.2</span><span class="p">),</span><span class="n">real_probability_Betway</span><span class="p">,</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;l&#39;</span><span class="p">)</span>
+
+<span class="nf">plot</span><span class="p">(</span><span class="n">delta_home_away_win_bet365</span><span class="p">,</span><span class="n">pnormal_premier_league_bets_bet365_1x2[2</span><span class="p">,</span><span class="n">]</span><span class="p">,</span> <span class="n">xlab</span> <span class="o">=</span> <span class="s">&quot;P(home win) – P(away win)&quot;</span><span class="p">,</span> <span class="n">ylab</span> <span class="o">=</span> <span class="s">&quot;P(tie)&quot;</span><span class="p">,</span><span class="n">axes</span> <span class="o">=</span><span class="s">&quot;FALSE&quot;</span><span class="p">,</span><span class="n">main</span><span class="o">=</span> <span class="s">&quot;bet365&quot;</span><span class="p">)</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">2</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0.5</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+<span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">seq</span><span class="p">(</span><span class="m">-1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">0.1</span><span class="p">))</span>
+<span class="nf">lines</span><span class="p">(</span><span class="nf">seq</span><span class="p">(</span><span class="m">-0.9</span><span class="p">,</span><span class="m">0.9</span><span class="p">,</span><span class="m">0.2</span><span class="p">),</span><span class="n">real_probability_bet365</span><span class="p">,</span><span class="n">type</span> <span class="o">=</span> <span class="s">&#39;l&#39;</span><span class="p">)</span>
+
+
+<span class="c1">###############################  TASK 3 #########################################</span>
+
+<span class="n">stats_at_least_one_red_card</span> <span class="o">=</span> <span class="n">stats</span><span class="nf">[</span><span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">stats</span><span class="o">$</span><span class="n">home_RedCards</span><span class="p">)</span><span class="o">==</span><span class="s">&quot;FALSE&quot;</span> <span class="o">&amp;</span> <span class="n">stats</span><span class="o">$</span><span class="n">home_RedCards</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="nf">is.na</span><span class="p">(</span><span class="n">stats</span><span class="o">$</span><span class="n">away_RedCards</span><span class="p">)</span><span class="o">==</span><span class="s">&quot;FALSE&quot;</span> <span class="o">&amp;</span> <span class="n">stats</span><span class="o">$</span><span class="n">away_RedCards</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">,,</span><span class="n">][</span><span class="p">,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;match_id&quot;</span><span class="p">,</span><span class="s">&quot;home_RedCards&quot;</span><span class="p">,</span><span class="s">&quot;away_RedCards&quot;</span><span class="p">)</span><span class="n">]</span>
+<span class="n">ind_premier_league_red_card</span><span class="o">=</span>  <span class="nf">na.omit</span><span class="p">(</span><span class="nf">match</span><span class="p">(</span><span class="n">stats_at_least_one_red_card</span><span class="o">$</span><span class="n">match_id</span><span class="p">,</span><span class="n">premier_league_match_id</span><span class="p">))</span>
+
+<span class="c1">############################### 1xBet ###########################################</span>
+
+<span class="n">premier_league_bets_1xBet_1_no_red_card</span> <span class="o">&lt;-</span> <span class="n">premier_league_bets_1xBet_1[</span><span class="o">-</span><span class="nf">na.omit</span><span class="p">(</span><span class="nf">match</span><span class="p">(</span><span class="n">premier_league_match_id[ind_premier_league_red_card]</span><span class="p">,</span><span class="n">premier_league_bets_1xBet_x</span><span class="o">$</span><span class="n">match_id</span><span class="p">)),</span><span class="n">]</span>
+<span class="n">premier_league_bets_1xBet_x_no_red_card</span> <span class="o">&lt;-</span> <span class="n">premier_league_bets_1xBet_x[</span><span class="o">-</span><span class="nf">na.omit</span><span class="p">(</span><span class="nf">match</span><span class="p">(</span><span class="n">premier_league_match_id[ind_premier_league_red_card]</span><span class="p">,</span><span class="n">premier_league_bets_1xBet_x</span><span class="o">$</span><span class="n">match_id</span><span class="p">)),</span><span class="n">]</span>
+<span class="n">premier_league_bets_1xBet_2_no_red_card</span> <span class="o">&lt;-</span> <span class="n">premier_league_bets_1xBet_2[</span><span class="o">-</span><span class="nf">na.omit</span><span class="p">(</span><span class="nf">match</span><span class="p">(</span><span class="n">premier_league_match_id[ind_premier_league_red_card]</span><span class="p">,</span><span class="n">premier_league_bets_1xBet_x</span><span class="o">$</span><span class="n">match_id</span><span class="p">)),</span><span class="n">]</span>
+
+<span class="n">premier_league_bets_1xBet_1x2_no_red_card</span> <span class="o">=</span> <span class="nf">rbind</span><span class="p">(</span><span class="n">premier_league_bets_1xBet_1_no_red_card[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span><span class="p">,</span><span class="n">premier_league_bets_1xBet_x_no_red_card[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span><span class="p">,</span><span class="n">premier_league_bets_1xBet_2_no_red_card[</span><span class="p">,</span><span class="m">5</span><span class="n">]</span> <span class="p">)</span>
+
+<span class="n">p_premier_league_bets_1xBet_1x2_no_red_card</span> <span class="o">=</span> <span class="m">1</span><span class="o">/</span><span class="n">premier_league_bets_1xBet_1x2_no_red_card</span>
+<span class="n">colsum_p_premier_league_bets_1xBet_1x2_no_red_card</span> <span class="o">=</span> <span class="nf">colSums</span><span class="p">(</span><span class="n">p_premier_league_bets_1xBet_1x2_no_red_card</span><span class="p">)</span>
+<span class="n">pnormal_premier_league_bets_1xBet_1x2_no_red_Card</span> <span class="o">=</span> <span class="nf">sweep</span><span class="p">(</span><span class="n">p_premier_league_bets_1xBet_1x2_no_red_card</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="n">colsum_p_premier_league_bets_1xBet_1x2_no_red_card</span><span class="p">,</span> <span class="n">FUN</span> <span class="o">=</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
+
+<span class="n">delta_home_away_win_no_red_card</span> <span class="o">=</span> <span class="n">pnormal_premier_league_bets_1xBet_1x2_no_red_Card[1</span><span class="p">,</span><span class="n">]</span> <span class="o">-</span> <span class="n">pnormal_premier_league_bets_1xBet_1x2_no_red_Card[3</span><span class="p">,</span><span class="n">]</span> 
+
+<span class="n">scores_premier_league_1xBet_no_red_card</span> <span class="o">=</span> <span class="nf">rbind</span><span class="p">(</span><span class="n">matches</span><span class="nf">[match</span><span class="p">(</span> <span class="n">premier_league_bets_1xBet_x_no_red_card</span><span class="o">$</span><span class="n">match_id</span><span class="p">,</span><span class="n">matches</span><span class="o">$</span><span class="n">match_id</span>  <span class="p">),</span><span class="s">&quot;match_hometeam_score&quot;</span><span class="n">]</span><span class="p">,</span><span class="n">matches</span><span class="nf">[match</span><span class="p">(</span> <span class="n">premier_league_bets_1xBet_x_no_red_card</span><span class="o">$</span><span class="n">match_id</span><span class="p">,</span><span class="n">matches</span><span class="o">$</span><span class="n">match_id</span>  <span class="p">),</span><span class="s">&quot;match_awayteam_score&quot;</span><span class="n">]</span><span class="p">)</span> 
+<span class="n">score_difference_premier_league_1xBet_no_red_card</span> <span class="o">=</span> <span class="n">scores_premier_league_1xBet_no_red_card[1</span><span class="p">,</span><span class="n">]</span> <span class="o">-</span> <span class="n">scores_premier_league_1xBet_no_red_card[2</span><span class="p">,</span><span class="n">]</span>
+
+<span class="n">bin_number</span> <span class="o">=</span>   <span class="nf">ceiling</span><span class="p">(</span><span class="n">delta_home_away_win_no_red_card</span> <span class="o">/</span> <span class="m">0.2</span><span class="p">)</span><span class="m">+5</span>
+
+
+<span class="n">bins_1xBet_nrc</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_1xBet_x</span><span class="p">))</span>
+<span class="n">bins_correct_guess_1xBet_nrc</span> <span class="o">=</span> <span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">,</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_1xBet_x</span><span class="p">))</span>
+
+<span class="nf">for</span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="nf">NROW</span><span class="p">(</span><span class="n">premier_league_bets_1xBet_x_no_red_card</span><span class="p">)){</span>
+  
+  <span class="n">bins_1xBet_nrc[bin_number[i]</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="nf">if</span><span class="p">(</span><span class="n">score_difference_premier_league_1xBet_no_red_card[i]</span> <span class="o">==</span> <span class="m">0</span><span class="p">){</span>
+    <span class="n">bins_correct_guess_1xBet_nrc[bin_number[i]</span><span class="p">,</span><span class="n">i]</span> <span class="o">=</span> <span class="m">1</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">real_probability_1xBet_nrc</span> <span class="o">=</span> <span class="nf">rowSums</span><span class="p">(</span><span class="n">bins_correct_guess_1xBet_nrc</span><span class="p">)</span><span class="o">/</span> <span class="nf">rowSums</span><span class="p">(</span><span class="n">bins_1xBet_nrc</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13176,236 +13480,601 @@ div#notebook {
 <div class="output_png output_subarea ">
 <img src="data:image/png;base64,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
-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
-rkJggg=="
+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"
 >
 </div>
 
 </div>
 
-</div>
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+oACEBIAC/wd1TzZbXg9pUQAAAABJRU5ErkJggg=="
+>
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-r"><pre><span></span>
-</pre></div>
 
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-r"><pre><span></span>
-</pre></div>
-
-    </div>
 </div>
 </div>
 
