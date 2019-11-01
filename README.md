@@ -3,7 +3,7 @@ ONUR BOY
 https://bu-ie-582.github.io/fall19-onurboy123/
 
 
-homework - 1 / R > [here](Untitled4.ipynb)
+homework - 1 / R > [here](homework.ipynb)
 
 homework - 1 / html > [here](index.html)
 
