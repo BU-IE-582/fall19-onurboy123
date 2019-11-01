@@ -12,5 +12,6 @@ hw2 R > hw2.ipynb
 hw2 html > hw2.html
 
 ## Homework 2
-[Here](files/hw2.ipynb) 
+R: [Here](files/hw2.ipynb) 
+
 html: [Here](files/hw2.html) 
