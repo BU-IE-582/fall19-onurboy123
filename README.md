@@ -15,3 +15,7 @@ hw2 html > hw2.html
 R: [Here](files/hw2.ipynb) 
 
 html: [Here](files/hw2.html) 
+
+ here [hw2.html](hw2.html)
+ 
+ 
